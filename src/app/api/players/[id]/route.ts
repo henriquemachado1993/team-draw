@@ -4,9 +4,10 @@ import { updatePlayer, deletePlayer } from '@/lib/players';
 // PUT - Atualizar jogador
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { nickname, level } = await request.json();
     
     if (!nickname || level === undefined) {
@@ -16,7 +17,7 @@ export async function PUT(
       );
     }
     
-    const player = await updatePlayer(params.id, nickname, level);
+    const player = await updatePlayer(id, nickname, level);
     return NextResponse.json(player);
   } catch (error) {
     console.error('Erro na API PUT /players/[id]:', error);
@@ -38,10 +39,11 @@ export async function PUT(
 // DELETE - Deletar jogador
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await deletePlayer(params.id);
+    const { id } = await params;
+    await deletePlayer(id);
     return NextResponse.json({ message: 'Jogador deletado com sucesso' });
   } catch (error) {
     console.error('Erro na API DELETE /players/[id]:', error);
