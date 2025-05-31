@@ -87,7 +87,7 @@ export async function deletePlayer(id: string): Promise<void> {
 }
 
 // Salvar um sorteio de times
-export async function saveTeamDraw(playerIds: string[], teams: any[]): Promise<void> {
+export async function saveTeamDraw(playerIds: string[], teams: unknown[]): Promise<void> {
   try {
     await prisma.teamDraw.create({
       data: {

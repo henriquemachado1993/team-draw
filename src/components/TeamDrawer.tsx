@@ -41,16 +41,7 @@ export default function TeamDrawer({ players, onDraw }: TeamDrawerProps) {
     onDraw(teams);
   };
 
-  const getLevelLabel = (level: number) => {
-    const levels = {
-      1: 'Iniciante',
-      2: 'Intermediário',
-      3: 'Avançado',
-      4: 'Expert',
-      5: 'Profissional'
-    };
-    return levels[level as keyof typeof levels];
-  };
+
 
   const getLevelColor = (level: number) => {
     const colors = {
