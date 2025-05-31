@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sorteador de Times",
+  title: "Sorteador de Times do MIX",
   description: "Gerencie seus jogadores e sorteie times equilibrados",
 };
 
