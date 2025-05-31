@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { updatePlayer, deletePlayer } from '@/lib/players';
 
 // PUT - Atualizar jogador
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: any) {
   try {
     const { nickname, level } = await request.json();
     
@@ -36,10 +33,7 @@ export async function PUT(
 }
 
 // DELETE - Deletar jogador
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: any) {
   try {
     await deletePlayer(params.id);
     return NextResponse.json({ message: 'Jogador deletado com sucesso' });
