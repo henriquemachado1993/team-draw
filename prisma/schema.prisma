@@ -28,5 +28,13 @@ model TeamDraw {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   players   Player[]
-  teams     Json     // Armazenará os times sorteados em formato JSON
+  teams     Json
+}
+
+model ConnectionHeartbeat {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  clientId   String   @unique
+  lastPingAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
