@@ -102,12 +102,12 @@ export default function Home() {
     setDrawnTeams(teams);
     
     // Salvar sorteio no banco
-    const success = await saveTeamDraw(teams);
-    if (success) {
-      showNotification('Sorteio salvo no banco de dados!', 'success');
-    } else {
-      showNotification(error || 'Erro ao salvar sorteio', 'error');
-    }
+    //const success = await saveTeamDraw(teams);
+    //if (success) {
+    //  showNotification('Sorteio salvo no banco de dados!', 'success');
+    //} else {
+    //  showNotification(error || 'Erro ao salvar sorteio', 'error');
+    //}
   };
 
   const handleSelectPlayer = (player: Player) => {
