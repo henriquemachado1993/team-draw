@@ -16,6 +16,13 @@ export async function PUT(
       );
     }
 
+    if (level < 1 || level > 20) {
+      return NextResponse.json(
+        { error: "Level deve estar entre 1 e 20" },
+        { status: 400 }
+      );
+    }
+
     const player = await updatePlayer((await params).id, nickname, level);
     return NextResponse.json(player);
   } catch (error) {

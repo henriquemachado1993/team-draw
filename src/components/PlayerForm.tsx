@@ -122,11 +122,21 @@ export default function PlayerForm({
           onChange={(e) => setLevel(Number(e.target.value))}
           className="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
         >
-          <option value={1}>Iniciante</option>
-          <option value={2}>Intermediário</option>
-          <option value={3}>Avançado</option>
-          <option value={4}>Expert</option>
-          <option value={5}>Profissional</option>
+          {Array.from({ length: 20 }, (_, i) => i + 1).map(levelNum => {
+            const getLevelLabel = (level: number) => {
+              if (level >= 1 && level <= 5) return 'Iniciante';
+              if (level >= 6 && level <= 10) return 'Intermediário';
+              if (level >= 11 && level <= 15) return 'Avançado';
+              if (level >= 16 && level <= 18) return 'Expert';
+              if (level >= 19 && level <= 20) return 'Profissional';
+              return 'Nível ' + level;
+            };
+            return (
+              <option key={levelNum} value={levelNum}>
+                Nv.{levelNum} - {getLevelLabel(levelNum)}
+              </option>
+            );
+          })}
         </select>
       </div>
 

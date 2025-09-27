@@ -38,6 +38,13 @@ export async function POST(request: NextRequest) {
         );
       }
       
+      if (level < 1 || level > 20) {
+        return NextResponse.json(
+          { error: 'Level deve estar entre 1 e 20' },
+          { status: 400 }
+        );
+      }
+      
       const player = await createPlayer(nickname, level);
       return NextResponse.json(player, { status: 201 });
     }

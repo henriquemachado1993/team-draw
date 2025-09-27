@@ -31,25 +31,21 @@ export default function PlayerList({
   const [editLevel, setEditLevel] = useState(1);
 
   const getLevelLabel = (level: number) => {
-    const levels = {
-      1: 'Iniciante',
-      2: 'Intermediário',
-      3: 'Avançado',
-      4: 'Expert',
-      5: 'Profissional'
-    };
-    return levels[level as keyof typeof levels];
+    if (level >= 1 && level <= 5) return 'Iniciante';
+    if (level >= 6 && level <= 10) return 'Intermediário';
+    if (level >= 11 && level <= 15) return 'Avançado';
+    if (level >= 16 && level <= 18) return 'Expert';
+    if (level >= 19 && level <= 20) return 'Profissional';
+    return 'Nível ' + level;
   };
 
   const getLevelColor = (level: number) => {
-    const colors = {
-      1: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      2: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      3: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      4: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-      5: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    };
-    return colors[level as keyof typeof colors];
+    if (level >= 1 && level <= 5) return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+    if (level >= 6 && level <= 10) return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+    if (level >= 11 && level <= 15) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+    if (level >= 16 && level <= 18) return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
+    if (level >= 19 && level <= 20) return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+    return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
   };
 
   const isPlayerSelected = (playerId: string) => {
@@ -164,11 +160,11 @@ export default function PlayerList({
                           onChange={(e) => setEditLevel(Number(e.target.value))}
                           className="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
-                          <option value={1}>Iniciante</option>
-                          <option value={2}>Intermediário</option>
-                          <option value={3}>Avançado</option>
-                          <option value={4}>Expert</option>
-                          <option value={5}>Profissional</option>
+                          {Array.from({ length: 20 }, (_, i) => i + 1).map(level => (
+                            <option key={level} value={level}>
+                              Nv.{level} - {getLevelLabel(level)}
+                            </option>
+                          ))}
                         </select>
                       ) : (
                         <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getLevelColor(player.level)}`}>

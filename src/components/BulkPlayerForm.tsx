@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Tooltip from './Tooltip';
 
-const LEVEL_DESCRIPTIONS = {
-  1: 'Iniciante - Jogador que está começando a jogar',
-  2: 'Intermediário - Jogador com experiência básica',
-  3: 'Avançado - Jogador com boa experiência',
-  4: 'Expert - Jogador muito experiente',
-  5: 'Profissional - Jogador de alto nível'
+const getLevelDescription = (level: number) => {
+  if (level >= 1 && level <= 5) return 'Iniciante - Jogador que está começando a jogar';
+  if (level >= 6 && level <= 10) return 'Intermediário - Jogador com experiência básica';
+  if (level >= 11 && level <= 15) return 'Avançado - Jogador com boa experiência';
+  if (level >= 16 && level <= 18) return 'Expert - Jogador muito experiente';
+  if (level >= 19 && level <= 20) return 'Profissional - Jogador de alto nível';
+  return `Nível ${level} - Jogador especializado`;
 };
 
 interface BulkPlayerFormProps {
@@ -93,9 +94,9 @@ export default function BulkPlayerForm({ onSubmit, isNicknameExists }: BulkPlaye
     <div className="text-left max-w-sm">
       <div className="font-semibold mb-2">Níveis Disponíveis:</div>
       <div className="space-y-1">
-        {Object.entries(LEVEL_DESCRIPTIONS).map(([level, description]) => (
+        {Array.from({ length: 20 }, (_, i) => i + 1).map(level => (
           <div key={level} className="text-xs">
-            <span className="font-medium">Nível {level}:</span> {description}
+            <span className="font-medium">Nível {level}:</span> {getLevelDescription(level)}
           </div>
         ))}
       </div>
