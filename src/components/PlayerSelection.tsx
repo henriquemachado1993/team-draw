@@ -20,7 +20,7 @@ export default function PlayerSelection({
 }: PlayerSelectionProps) {
   const getLevelLabel = (level: number) => {
     const levels = {
-      1: 'Iniciante',
+      1: 'Potinha',
       2: 'Intermediário',
       3: 'Avançado',
       4: 'Expert',

@@ -17,14 +17,12 @@ export default function TeamDisplay({ teams }: TeamDisplayProps) {
   const [copied, setCopied] = useState(false);
 
   const getLevelLabel = (level: number) => {
-    const levels = {
-      1: 'Iniciante',
-      2: 'Intermediário',
-      3: 'Avançado',
-      4: 'Expert',
-      5: 'Profissional'
-    };
-    return levels[level as keyof typeof levels];
+    if (level >= 1 && level <= 5) return 'Potinha';
+    if (level >= 6 && level <= 10) return 'Intermediário';
+    if (level >= 11 && level <= 15) return 'Avançado';
+    if (level >= 16 && level <= 18) return 'Expert';
+    if (level >= 19 && level <= 20) return 'Profissional';
+    return 'Nível ' + level;
   };
 
   const calculateTeamLevel = (team: Player[]) => {

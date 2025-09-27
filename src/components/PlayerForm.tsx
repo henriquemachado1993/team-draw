@@ -124,7 +124,7 @@ export default function PlayerForm({
         >
           {Array.from({ length: 20 }, (_, i) => i + 1).map(levelNum => {
             const getLevelLabel = (level: number) => {
-              if (level >= 1 && level <= 5) return 'Iniciante';
+              if (level >= 1 && level <= 5) return 'Potinha';
               if (level >= 6 && level <= 10) return 'Intermediário';
               if (level >= 11 && level <= 15) return 'Avançado';
               if (level >= 16 && level <= 18) return 'Expert';
