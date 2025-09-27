@@ -23,7 +23,6 @@ export default function Home() {
     addManyPlayers,
     updatePlayer,
     deletePlayer,
-    saveTeamDraw,
     isNicknameExists,
   } = usePlayers();
 
