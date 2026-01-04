@@ -11,6 +11,19 @@ import {
 import { usePlayers } from '@/hooks/usePlayers';
 import { Player } from '@/lib/players';
 
+interface BalanceMetrics {
+  teamStats: Array<{
+    teamIndex: number;
+    sum: number;
+    avg: number;
+    count: number;
+  }>;
+  maxSum: number;
+  minSum: number;
+  difference: number;
+  isBalanced: boolean;
+}
+
 export default function Home() {
   const {
     players,
@@ -24,6 +37,7 @@ export default function Home() {
   } = usePlayers();
 
   const [drawnTeams, setDrawnTeams] = useState<Player[][]>([]);
+  const [teamBalanceMetrics, setTeamBalanceMetrics] = useState<BalanceMetrics | null>(null);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [selectedPlayersForDraw, setSelectedPlayersForDraw] = useState<Player[]>([]);
   const [isPlayerModalOpen, setIsPlayerModalOpen] = useState(false);
@@ -85,8 +99,9 @@ export default function Home() {
     }
   };
 
-  const handleDrawTeams = async (teams: Player[][]) => {
+  const handleDrawTeams = async (teams: Player[][], metrics: BalanceMetrics) => {
     setDrawnTeams(teams);
+    setTeamBalanceMetrics(metrics);
     showNotification(`Times sorteados com sucesso! ${teams.length} times criados.`, 'success');
   };
 
@@ -205,7 +220,7 @@ export default function Home() {
         {/* Times Sorteados - Elemento Principal */}
         {drawnTeams.length > 0 && (
           <div className="mb-6 animate-fade-in-up">
-            <TeamDisplay teams={drawnTeams} />
+            <TeamDisplay teams={drawnTeams} balanceMetrics={teamBalanceMetrics} />
           </div>
         )}
 
@@ -265,6 +280,7 @@ export default function Home() {
                 <TeamDrawer
                   players={selectedPlayersForDraw}
                   onDraw={handleDrawTeams}
+                  onOpenPlayerModal={() => setIsPlayerModalOpen(true)}
                 />
               </div>
             </div>
@@ -331,11 +347,11 @@ export default function Home() {
           )}
 
           {/* Jogadores Selecionados - Compacto */}
-          {selectedPlayersForDraw.length > 0 && (
+          {/* {selectedPlayersForDraw.length > 0 && (
             <div className="bg-white dark:bg-slate-800 rounded-xl shadow-card border border-slate-200 dark:border-slate-700 p-4 animate-fade-in-up">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                  Jogadores Selecionados
+                  Jogadores Selecionadossssss
                 </h3>
                 <button
                   onClick={() => setIsPlayerModalOpen(true)}
@@ -368,7 +384,7 @@ export default function Home() {
                 })}
               </div>
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Modal de Gerenciamento de Jogadores */}

@@ -145,8 +145,8 @@ Maria,8
 Pedro,12
 Ana,3`}
               className={`block w-full h-48 px-4 py-3 rounded-xl border-2 shadow-sm focus:ring-4 focus:ring-primary-500/20 transition-all duration-200 sm:text-base font-mono text-sm resize-none ${errors.length > 0
-                  ? 'border-red-300 dark:border-red-600 focus:border-red-500 bg-red-50 dark:bg-red-900/10 text-red-900 dark:text-red-200'
-                  : 'border-slate-200 dark:border-slate-600 focus:border-primary-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500'
+                ? 'border-red-300 dark:border-red-600 focus:border-red-500 bg-red-50 dark:bg-red-900/10 text-red-900 dark:text-red-200'
+                : 'border-slate-200 dark:border-slate-600 focus:border-primary-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500'
                 }`}
             />
             <div className="absolute bottom-3 right-3 text-xs text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-700 px-2 py-1 rounded-md border">
@@ -161,6 +161,7 @@ Ana,3`}
             </h5>
             <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
               <div><code className="bg-white dark:bg-slate-600 px-2 py-1 rounded text-xs">jogador1,5;jogador2,8;jogador3,12</code></div>
+
               <div className="text-xs mt-2">
                 • Use <strong>vírgula (,)</strong> para separar nome do nível<br />
                 • Use <strong>ponto e vírgula (;)</strong> para separar jogadores<br />

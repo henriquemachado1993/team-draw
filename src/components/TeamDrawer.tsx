@@ -11,7 +11,8 @@ interface Player {
 
 interface TeamDrawerProps {
   players: Player[];
-  onDraw: (teams: Player[][]) => void;
+  onDraw: (teams: Player[][], metrics: BalanceMetrics) => void;
+  onOpenPlayerModal: () => void;
 }
 
 interface BalanceMetrics {
@@ -27,9 +28,8 @@ interface BalanceMetrics {
   isBalanced: boolean;
 }
 
-export default function TeamDrawer({ players, onDraw }: TeamDrawerProps) {
+export default function TeamDrawer({ players, onDraw, onOpenPlayerModal }: TeamDrawerProps) {
   const [numberOfTeams, setNumberOfTeams] = useState(2);
-  const [lastBalanceMetrics, setLastBalanceMetrics] = useState<BalanceMetrics | null>(null);
 
   const drawTeams = () => {
     if (players.length < numberOfTeams) {
@@ -42,9 +42,8 @@ export default function TeamDrawer({ players, onDraw }: TeamDrawerProps) {
 
     // Calcula métricas de balanceamento
     const metrics = calculateBalanceMetrics(balancedTeams);
-    setLastBalanceMetrics(metrics);
 
-    onDraw(balancedTeams);
+    onDraw(balancedTeams, metrics);
   };
 
   // Função para criar times balanceados baseado na soma dos níveis
@@ -101,12 +100,18 @@ export default function TeamDrawer({ players, onDraw }: TeamDrawerProps) {
     const minSum = Math.min(...sums);
     const difference = maxSum - minSum;
 
+    // Calcula a diferença máxima entre as médias dos times
+    const avgs = teamStats.map(stat => stat.avg);
+    const maxAvg = Math.max(...avgs);
+    const minAvg = Math.min(...avgs);
+    const avgDifference = maxAvg - minAvg;
+
     return {
       teamStats,
       maxSum,
       minSum,
       difference,
-      isBalanced: difference <= 2 // Considera balanceado se diferença máxima for de 2 níveis ou menos
+      isBalanced: avgDifference <= 0.5 // Considera equilibrado se diferença máxima das médias for ≤ 0.5
     };
   };
 
@@ -167,11 +172,18 @@ export default function TeamDrawer({ players, onDraw }: TeamDrawerProps) {
           <div className="bg-gradient-to-r from-slate-50 to-white dark:from-slate-700 dark:to-slate-600 rounded-xl p-4 border border-slate-200 dark:border-slate-600">
             <div className="flex items-center justify-between mb-3">
               <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
-                Jogadores Selecionados
+                Jogadores Selecionados ({players.length})
               </h4>
-              <span className="text-sm font-bold text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/30 px-2 py-1 rounded-full">
-                {players.length}
-              </span>
+              <div className="flex items-center justify-between mb-3">
+
+                <button
+                  onClick={onOpenPlayerModal}
+                  className="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
+                >
+                  Alterar →
+                </button>
+              </div>
+
             </div>
             <div className="flex flex-wrap gap-2">
               {players.map((player) => (
@@ -193,55 +205,13 @@ export default function TeamDrawer({ players, onDraw }: TeamDrawerProps) {
         >
           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <div className="relative z-10 flex items-center">
-            <ArrowPathIcon className="h-7 w-7 mr-3 animate-spin group-hover:animate-pulse" style={{animationDuration: '1.5s'}} />
+            <ArrowPathIcon className="h-7 w-7 mr-3 animate-spin group-hover:animate-pulse" style={{ animationDuration: '1.5s' }} />
             <span className="mr-2">🎲</span>
             <span className="font-black">SORTEAR TIMES!</span>
             <span className="ml-2 text-sm font-semibold">({numberOfTeams} times)</span>
           </div>
         </button>
 
-        {/* Métricas de balanceamento do último sorteio */}
-        {lastBalanceMetrics && (
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100">
-                📊 Balanceamento dos Times
-              </h4>
-              <div className="flex items-center space-x-2">
-                <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                  lastBalanceMetrics.isBalanced
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                    : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                }`}>
-                  {lastBalanceMetrics.isBalanced ? '✓ Equilibrado' : '⚠️ Desequilibrado'}
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-3">
-              {lastBalanceMetrics.teamStats.map((stat) => (
-                <div key={stat.teamIndex} className="bg-white dark:bg-slate-700 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
-                  <div className="text-center">
-                    <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
-                      Time {stat.teamIndex}
-                    </div>
-                    <div className="text-lg font-bold text-slate-900 dark:text-white">
-                      {stat.sum}
-                    </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
-                      {stat.count} jogadores
-                    </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
-                      Ø {stat.avg}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="text-center text-xs text-slate-600 dark:text-slate-400">
-              Diferença máxima: <span className="font-semibold text-slate-900 dark:text-white">{lastBalanceMetrics.difference}</span> níveis
-            </div>
-          </div>
-        )}
 
         {players.length === 0 && (
           <div className="text-center py-6 px-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border-2 border-amber-200 dark:border-amber-800">

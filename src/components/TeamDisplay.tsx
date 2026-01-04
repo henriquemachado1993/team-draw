@@ -10,11 +10,25 @@ interface Player {
   level: number;
 }
 
-interface TeamDisplayProps {
-  teams: Player[][];
+interface BalanceMetrics {
+  teamStats: Array<{
+    teamIndex: number;
+    sum: number;
+    avg: number;
+    count: number;
+  }>;
+  maxSum: number;
+  minSum: number;
+  difference: number;
+  isBalanced: boolean;
 }
 
-export default function TeamDisplay({ teams }: TeamDisplayProps) {
+interface TeamDisplayProps {
+  teams: Player[][];
+  balanceMetrics?: BalanceMetrics | null;
+}
+
+export default function TeamDisplay({ teams, balanceMetrics }: TeamDisplayProps) {
   const [copied, setCopied] = useState(false);
 
   const getLevelLabel = (level: number) => {
@@ -146,10 +160,20 @@ export default function TeamDisplay({ teams }: TeamDisplayProps) {
 
         {/* Estatísticas gerais */}
         <div className="mt-6 bg-gradient-to-r from-slate-50 to-white dark:from-slate-700 dark:to-slate-600 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3 flex items-center">
-            <span className="mr-2">📊</span>
-            Estatísticas
-          </h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center">
+              
+              Estatísticas
+            </h3>
+            {balanceMetrics && (
+              <span className={`text-xs font-bold px-2 py-1 rounded-full ${balanceMetrics.isBalanced
+                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                }`}>
+                {balanceMetrics.isBalanced ? '✓ Equilibrado' : '⚠️ Desequilibrado'}
+              </span>
+            )}
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="text-center">
               <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
@@ -198,6 +222,7 @@ export default function TeamDisplay({ teams }: TeamDisplayProps) {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
