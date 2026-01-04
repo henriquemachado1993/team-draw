@@ -62,9 +62,30 @@ export default function TeamDisplay({ teams, balanceMetrics }: TeamDisplayProps)
     return `**Time ${teamNumber}**\n${players}\n**Nível Médio: ${calculateTeamLevel(team)}**`;
   };
 
+  const formatStatsForDiscord = () => {
+    const totalPlayers = teams.reduce((sum, team) => sum + team.length, 0);
+    const avgLevel = (teams.map(team => parseFloat(calculateTeamLevel(team))).reduce((a, b) => a + b, 0) / teams.length).toFixed(1);
+    const maxDiff = (Math.max(...teams.map(team => parseFloat(calculateTeamLevel(team)))) - Math.min(...teams.map(team => parseFloat(calculateTeamLevel(team))))).toFixed(2);
+
+    let balanceStatus = 'Desconhecido';
+    if (balanceMetrics) {
+      balanceStatus = balanceMetrics.isBalanced ? 'Equilibrado' : 'Desequilibrado';
+    }
+
+    return `\n\n📊 **ESTATÍSTICAS**\n` +
+           `• Times criados: ${teams.length}\n` +
+           `• Total de jogadores: ${totalPlayers}\n` +
+           `• Média geral: ${avgLevel}\n` +
+           `• Diferença máxima: ${maxDiff}\n` +
+           `• Status: ${balanceStatus}`;
+  };
+
   const copyTeamsToClipboard = () => {
-    const text = teams.map((team, index) => formatTeamForDiscord(team, index + 1)).join('\n\n');
-    navigator.clipboard.writeText(text);
+    const teamsText = teams.map((team, index) => formatTeamForDiscord(team, index + 1)).join('\n\n');
+    const statsText = formatStatsForDiscord();
+    const fullText = teamsText + statsText;
+
+    navigator.clipboard.writeText(fullText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
