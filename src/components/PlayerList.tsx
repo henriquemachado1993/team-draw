@@ -23,7 +23,6 @@ interface PlayerListProps {
 
 export default function PlayerList({
   players,
-  onEdit,
   onDelete,
   selectedPlayers = [],
   onSelectPlayer,

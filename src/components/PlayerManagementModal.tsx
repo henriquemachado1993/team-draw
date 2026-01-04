@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon, UserPlusIcon, UsersIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, UsersIcon } from '@heroicons/react/24/outline';
 import PlayerInputMode from './PlayerInputMode';
 import PlayerList from './PlayerList';
 import { Player } from '@/lib/players';

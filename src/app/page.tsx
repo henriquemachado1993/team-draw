@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Cog6ToothIcon, SparklesIcon, TrophyIcon, UsersIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
+import { SparklesIcon, TrophyIcon, UsersIcon } from '@heroicons/react/24/outline';
 import {
   TeamDrawer,
   TeamDisplay,
-  ThemeToggle,
   PlayerManagementModal,
   OnboardingWizard
 } from '@/components';
