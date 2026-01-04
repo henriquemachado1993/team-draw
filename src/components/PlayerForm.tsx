@@ -10,32 +10,16 @@ interface Player {
 
 interface PlayerFormProps {
   onSubmit: (nickname: string, level: number) => void;
-  editingPlayer?: Player | null;
-  onCancelEdit?: () => void;
   isNicknameExists?: (nickname: string, excludeId?: string) => boolean;
 }
 
-export default function PlayerForm({ 
-  onSubmit, 
-  editingPlayer, 
-  onCancelEdit,
-  isNicknameExists 
+export default function PlayerForm({
+  onSubmit,
+  isNicknameExists
 }: PlayerFormProps) {
   const [nickname, setNickname] = useState('');
   const [level, setLevel] = useState(1);
   const [nicknameError, setNicknameError] = useState('');
-
-  // Atualizar formulário quando editingPlayer mudar
-  useEffect(() => {
-    if (editingPlayer) {
-      setNickname(editingPlayer.nickname);
-      setLevel(editingPlayer.level);
-    } else {
-      setNickname('');
-      setLevel(1);
-    }
-    setNicknameError('');
-  }, [editingPlayer]);
 
   // Validar nickname em tempo real
   const validateNickname = (value: string) => {
@@ -44,7 +28,7 @@ export default function PlayerForm({
       return;
     }
 
-    if (isNicknameExists && isNicknameExists(value.trim(), editingPlayer?.id)) {
+    if (isNicknameExists && isNicknameExists(value.trim())) {
       setNicknameError('Este nickname já está em uso');
     } else {
       setNicknameError('');
@@ -60,7 +44,7 @@ export default function PlayerForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedNickname = nickname.trim();
-    
+
     if (!trimmedNickname) {
       setNicknameError('Nickname é obrigatório');
       return;
@@ -71,93 +55,88 @@ export default function PlayerForm({
     }
 
     onSubmit(trimmedNickname, level);
-    if (!editingPlayer) {
-      setNickname('');
-      setLevel(1);
-      setNicknameError('');
-    }
-  };
-
-  const handleCancel = () => {
     setNickname('');
     setLevel(1);
     setNicknameError('');
-    if (onCancelEdit) {
-      onCancelEdit();
-    }
   };
 
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="nickname" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Nickname
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-2">
+        <label htmlFor="nickname" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+          Nickname do Jogador
         </label>
-        <input
-          type="text"
-          id="nickname"
-          value={nickname}
-          onChange={handleNicknameChange}
-          className={`block w-full rounded-lg border shadow-sm focus:ring-indigo-500 sm:text-base ${
-            nicknameError 
-              ? 'border-red-300 dark:border-red-600 focus:border-red-500 dark:focus:border-red-500' 
-              : 'border-gray-300 dark:border-gray-600 focus:border-indigo-500'
-          } dark:bg-gray-700 dark:text-white`}
-          required
-        />
+        <div className="relative">
+          <input
+            type="text"
+            id="nickname"
+            value={nickname}
+            onChange={handleNicknameChange}
+            placeholder="Digite o nickname..."
+            className={`block w-full px-4 py-3 rounded-xl border-2 shadow-sm focus:ring-4 focus:ring-primary-500/20 transition-all duration-200 sm:text-base ${
+              nicknameError
+                ? 'border-red-300 dark:border-red-600 focus:border-red-500 bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-200'
+                : 'border-slate-200 dark:border-slate-600 focus:border-primary-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500'
+            }`}
+            required
+          />
+          {nickname.trim() && !nicknameError && (
+            <div className="absolute right-3 top-3 w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          )}
+        </div>
         {nicknameError && (
-          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+          <p className="flex items-center text-sm text-red-600 dark:text-red-400 font-medium">
+            <span className="mr-1">⚠️</span>
             {nicknameError}
           </p>
         )}
       </div>
 
-      <div>
-        <label htmlFor="level" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Nível
+      <div className="space-y-2">
+        <label htmlFor="level" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+          Nível de Habilidade
         </label>
-        <select
-          id="level"
-          value={level}
-          onChange={(e) => setLevel(Number(e.target.value))}
-          className="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
-        >
-          {Array.from({ length: 20 }, (_, i) => i + 1).map(levelNum => {
-            const getLevelLabel = (level: number) => {
-              if (level >= 1 && level <= 5) return 'Potinha';
-              if (level >= 6 && level <= 10) return 'Intermediário';
-              if (level >= 11 && level <= 15) return 'Avançado';
-              if (level >= 16 && level <= 18) return 'Expert';
-              if (level >= 19 && level <= 20) return 'Profissional';
-              return 'Nível ' + level;
-            };
-            return (
-              <option key={levelNum} value={levelNum}>
-                Nv.{levelNum} - {getLevelLabel(levelNum)}
-              </option>
-            );
-          })}
-        </select>
+        <div className="relative">
+          <select
+            id="level"
+            value={level}
+            onChange={(e) => setLevel(Number(e.target.value))}
+            className="block w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 transition-all duration-200 sm:text-base appearance-none cursor-pointer"
+          >
+            {Array.from({ length: 5 }, (_, i) => i + 1).map(levelNum => {
+              const getLevelLabel = (level: number) => {
+                if (level == 1) return 'Potinha';
+                if (level == 2) return 'Intermediário';
+                if (level == 3 ) return 'Avançado';
+                if (level == 4) return 'Expert';
+                if (level == 5 ) return 'Profissional';
+                return 'Nível ' + level;
+              };
+              return (
+                <option key={levelNum} value={levelNum}>
+                  {levelNum} - {getLevelLabel(levelNum)}
+                </option>
+              );
+            })}
+          </select>
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
       </div>
 
-      <div className="flex space-x-3">
+      <div className="flex space-x-3 pt-2">
         <button
           type="submit"
           disabled={!!nicknameError || !nickname.trim()}
-          className="flex-1 inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600"
+          className="flex-1 inline-flex justify-center items-center px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 focus:outline-none focus:ring-4 focus:ring-primary-500/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transform hover:scale-[1.02] active:scale-[0.98] border-2 border-primary-500/30 hover:border-primary-400"
         >
-          {editingPlayer ? 'Atualizar Jogador' : 'Adicionar Jogador'}
+          <span className="mr-2">➕</span>
+          Adicionar Jogador
         </button>
-        
-        {editingPlayer && onCancelEdit && (
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="flex-1 inline-flex justify-center items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-lg shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-          >
-            Cancelar
-          </button>
-        )}
       </div>
     </form>
   );

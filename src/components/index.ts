@@ -7,4 +7,6 @@ export { default as TeamDrawer } from './TeamDrawer';
 export { default as TeamDisplay } from './TeamDisplay';
 export { default as ThemeToggle } from './ThemeToggle';
 export { default as Tabs } from './Tabs';
-export { default as Tooltip } from './Tooltip'; 
+export { default as Tooltip } from './Tooltip';
+export { default as PlayerManagementModal } from './PlayerManagementModal';
+export { default as OnboardingWizard } from './OnboardingWizard'; 
