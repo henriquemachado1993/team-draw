@@ -30,7 +30,6 @@ export default function PlayerManagementModal({
   players,
   onAddPlayer,
   onAddManyPlayers,
-  onEditPlayer,
   onDeletePlayer,
   onSelectPlayer,
   onDeselectPlayer,
