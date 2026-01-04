@@ -11,6 +11,7 @@ interface Player {
 
 interface PlayerListProps {
   players: Player[];
+  onEdit: (player: Player) => void;
   onDelete: (id: string) => void;
   selectedPlayers?: Player[];
   onSelectPlayer?: (player: Player) => void;
@@ -22,6 +23,7 @@ interface PlayerListProps {
 
 export default function PlayerList({
   players,
+  onEdit,
   onDelete,
   selectedPlayers = [],
   onSelectPlayer,

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { SparklesIcon, TrophyIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect, useCallback } from 'react';
+import { Cog6ToothIcon, SparklesIcon, TrophyIcon, UsersIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import {
   TeamDrawer,
   TeamDisplay,
+  ThemeToggle,
   PlayerManagementModal,
   OnboardingWizard
 } from '@/components';
@@ -67,6 +68,14 @@ export default function Home() {
     }
   };
 
+  const handleEditPlayer = async (player: Player) => {
+    const success = await updatePlayer(player.id, player.nickname, player.level);
+    if (success) {
+      showNotification('Jogador atualizado com sucesso!', 'success');
+    } else {
+      showNotification(error || 'Erro ao atualizar jogador', 'error');
+    }
+  };
 
   const handleDeletePlayer = async (id: string) => {
     const success = await deletePlayer(id);
@@ -370,6 +379,7 @@ export default function Home() {
           players={players}
           onAddPlayer={handleAddPlayer}
           onAddManyPlayers={handleBulkAddPlayers}
+          onEditPlayer={handleEditPlayer}
           onDeletePlayer={handleDeletePlayer}
           onSelectPlayer={handleSelectPlayer}
           onDeselectPlayer={handleDeselectPlayer}

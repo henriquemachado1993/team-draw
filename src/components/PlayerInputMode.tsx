@@ -4,6 +4,12 @@ import { useState } from 'react';
 import PlayerForm from './PlayerForm';
 import BulkPlayerForm from './BulkPlayerForm';
 
+interface Player {
+  id: string;
+  nickname: string;
+  level: number;
+}
+
 interface PlayerInputModeProps {
   onSubmit: (nickname: string, level: number) => void;
   onBulkSubmit: (players: { nickname: string; level: number }[]) => void;

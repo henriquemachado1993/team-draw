@@ -1,6 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+interface Player {
+  id: string;
+  nickname: string;
+  level: number;
+}
 
 interface PlayerFormProps {
   onSubmit: (nickname: string, level: number) => void;
