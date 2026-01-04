@@ -67,14 +67,6 @@ export default function Home() {
     }
   };
 
-  const handleEditPlayer = async (player: Player) => {
-    const success = await updatePlayer(player.id, player.nickname, player.level);
-    if (success) {
-      showNotification('Jogador atualizado com sucesso!', 'success');
-    } else {
-      showNotification(error || 'Erro ao atualizar jogador', 'error');
-    }
-  };
 
   const handleDeletePlayer = async (id: string) => {
     const success = await deletePlayer(id);
@@ -378,7 +370,6 @@ export default function Home() {
           players={players}
           onAddPlayer={handleAddPlayer}
           onAddManyPlayers={handleBulkAddPlayers}
-          onEditPlayer={handleEditPlayer}
           onDeletePlayer={handleDeletePlayer}
           onSelectPlayer={handleSelectPlayer}
           onDeselectPlayer={handleDeselectPlayer}
