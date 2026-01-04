@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CheckCircleIcon, UserGroupIcon, ArrowPathIcon, TrophyIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon as CheckCircleSolidIcon } from '@heroicons/react/24/solid';
 
@@ -20,7 +20,7 @@ export default function OnboardingWizard({
   const [currentStep, setCurrentStep] = useState(0);
   const [showWizard, setShowWizard] = useState(true);
 
-  const steps = [
+  const steps = useMemo(() => [
     {
       id: 1,
       title: "Adicione Jogadores",
@@ -61,7 +61,7 @@ export default function OnboardingWizard({
       actionHandler: null,
       condition: hasDrawnTeams
     }
-  ];
+  ], [playersCount, selectedPlayersCount, hasDrawnTeams, onOpenPlayerModal]);
 
   // Auto-avançar para o próximo passo disponível
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function OnboardingWizard({
     } else if (hasDrawnTeams) {
       setCurrentStep(3); // Último passo
     }
-  }, [playersCount, selectedPlayersCount, hasDrawnTeams]);
+  }, [playersCount, selectedPlayersCount, hasDrawnTeams, steps]);
 
   // Esconder wizard após completar todos os passos
   useEffect(() => {

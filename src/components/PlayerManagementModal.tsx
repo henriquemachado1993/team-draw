@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon, UserPlusIcon, UsersIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, UsersIcon } from '@heroicons/react/24/outline';
 import PlayerInputMode from './PlayerInputMode';
 import PlayerList from './PlayerList';
 import { Player } from '@/lib/players';
@@ -13,7 +13,6 @@ interface PlayerManagementModalProps {
   players: Player[];
   onAddPlayer: (nickname: string, level: number) => void;
   onAddManyPlayers: (players: { nickname: string; level: number }[]) => void;
-  onEditPlayer: (player: Player) => void;
   onDeletePlayer: (id: string) => void;
   onSelectPlayer: (player: Player) => void;
   onDeselectPlayer: (playerId: string) => void;
@@ -30,7 +29,6 @@ export default function PlayerManagementModal({
   players,
   onAddPlayer,
   onAddManyPlayers,
-  onEditPlayer,
   onDeletePlayer,
   onSelectPlayer,
   onDeselectPlayer,
